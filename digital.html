@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROPS Smart Advertising — Ecosistema Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,300;1,600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#03040A;--bg2:#060810;--card:#080A14;
+  --teal:#5FFFD4;--teal2:#2DD4BF;--teal3:#0D9488;
+  --magenta:#FF2D7A;--gold:#F5C842;
+  --text:#F0F4FF;--muted:#3A4060;--muted2:#6070A0;
+  --border:rgba(95,255,212,0.08);--border2:rgba(95,255,212,0.18);
+  --glow:rgba(95,255,212,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Space Mono',monospace;background:var(--bg);color:var(--text);overflow-x:hidden;cursor:none}
+
+/* ── CUSTOM CURSOR ── */
+#cursor{position:fixed;width:12px;height:12px;border-radius:50%;background:var(--teal);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s,width .2s,height .2s,background .2s;mix-blend-mode:screen}
+#cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(95,255,212,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .12s ease;mix-blend-mode:screen}
+body:has(a:hover) #cursor,body:has(button:hover) #cursor{width:20px;height:20px;background:var(--magenta)}
+body:has(a:hover) #cursor-ring,body:has(button:hover) #cursor-ring{width:50px;height:50px;border-color:rgba(255,45,122,.4)}
+
+/* ── GRID OVERLAY ── */
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(95,255,212,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(95,255,212,.025) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+
+/* ── SCAN LINE ── */
+body::after{content:'';position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--teal),transparent);animation:scan 4s linear infinite;pointer-events:none;z-index:1;opacity:.3}
+@keyframes scan{from{top:-2px}to{top:100vh}}
+
+/* ── CANVAS ── */
+#c{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;background:rgba(3,4,10,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border2)}
+.logo-mark{display:flex;align-items:center;gap:.8rem}
+.logo-hex{width:32px;height:32px;background:linear-gradient(135deg,var(--teal),var(--teal2));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);animation:pulse-hex 3s ease-in-out infinite}
+@keyframes pulse-hex{0%,100%{box-shadow:0 0 0 0 rgba(95,255,212,.4)}50%{box-shadow:0 0 20px 6px rgba(95,255,212,.15)}}
+.logo-text{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:.2em;color:var(--text)}
+.logo-text span{color:var(--teal)}
+.nav-right{display:flex;align-items:center;gap:2rem}
+.nav-link{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2);text-decoration:none;transition:color .2s;position:relative}
+.nav-link::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--teal);transition:width .3s}
+.nav-link:hover{color:var(--teal)}.nav-link:hover::after{width:100%}
+.nav-btn{background:transparent;border:1px solid var(--teal);color:var(--teal);padding:.38rem 1rem;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;font-family:'Space Mono',monospace;text-decoration:none;transition:all .25s;position:relative;overflow:hidden}
+.nav-btn::before{content:'';position:absolute;inset:0;background:var(--teal);transform:translateX(-101%);transition:transform .3s}
+.nav-btn:hover{color:var(--bg)}.nav-btn:hover::before{transform:none}
+.nav-btn span{position:relative;z-index:1}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5rem 2.5rem 4rem;text-align:center;position:relative;z-index:1;overflow:hidden}
+
+.hero-status{display:inline-flex;align-items:center;gap:.65rem;background:rgba(95,255,212,.05);border:1px solid var(--border2);padding:.35rem .9rem;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:2.5rem}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+.hero-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,10vw,12rem);line-height:.85;letter-spacing:.04em;margin-bottom:1rem;position:relative}
+.hero-h .line-ghost{display:block;color:transparent;-webkit-text-stroke:1px rgba(95,255,212,.15);animation:glitch-text 8s infinite}
+.hero-h .line-main{display:block;background:linear-gradient(135deg,var(--teal) 0%,var(--teal2) 50%,#99FFE8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s ease-in-out infinite}
+.hero-h .line-accent{display:block;color:var(--text)}
+@keyframes shimmer{0%,100%{background-position:0%}50%{background-position:100%}}
+@keyframes glitch-text{0%,95%,100%{transform:none;opacity:1}96%{transform:skewX(-3deg) translateX(3px);opacity:.8}97%{transform:skewX(2deg) translateX(-3px);opacity:.9}98%{transform:none}}
+
+.hero-sub{max-width:560px;font-size:.8rem;line-height:2;color:var(--muted2);margin:0 auto 3rem;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;font-weight:300}
+
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:4rem}
+.btn-glow{background:linear-gradient(135deg,var(--teal),var(--teal2));color:var(--bg);padding:.75rem 2rem;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;font-family:'Space Mono',monospace;text-decoration:none;position:relative;overflow:hidden;transition:all .3s;box-shadow:0 0 30px rgba(95,255,212,.3),inset 0 0 30px rgba(95,255,212,.05)}
+.btn-glow:hover{box-shadow:0 0 60px rgba(95,255,212,.5),0 0 120px rgba(95,255,212,.2);transform:translateY(-2px)}
+.btn-outline{border:1px solid rgba(95,255,212,.4);color:var(--teal);padding:.75rem 2rem;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;font-family:'Space Mono',monospace;text-decoration:none;transition:all .3s;background:transparent}
+.btn-outline:hover{background:rgba(95,255,212,.06);border-color:var(--teal);box-shadow:0 0 20px rgba(95,255,212,.15)}
+
+/* ── HERO STATS ── */
+.hero-stats{display:flex;gap:0;border:1px solid var(--border2);overflow:hidden}
+.hstat{padding:1.2rem 2.5rem;text-align:center;position:relative;border-right:1px solid var(--border2)}
+.hstat:last-child{border-right:none}
+.hstat-n{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;background:linear-gradient(135deg,var(--teal),var(--teal2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.hstat-l{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2);margin-top:.3rem}
+
+/* ── SCROLLING TICKER ── */
+.ticker{border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);overflow:hidden;white-space:nowrap;padding:.6rem 0;position:relative;z-index:1;background:rgba(3,4,10,.6)}
+.ticker-inner{display:inline-flex;gap:0;animation:ticker 25s linear infinite}
+.ticker-item{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2);padding:0 2rem;display:flex;align-items:center;gap:.8rem}
+.ticker-sep{color:var(--teal);font-size:.8rem}
+.ticker-item strong{color:var(--teal)}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── GANCHO SECTION ── */
+.gancho{padding:6rem 2.5rem;position:relative;z-index:1;max-width:1200px;margin:0 auto}
+.section-tag{display:flex;align-items:center;gap:.8rem;margin-bottom:1rem}
+.tag-line{width:2rem;height:1px;background:var(--teal);box-shadow:0 0 6px var(--teal)}
+.tag-txt{font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:var(--teal)}
+.section-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,6rem);line-height:.9;letter-spacing:.05em;margin-bottom:3rem}
+.section-h em{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--teal);-webkit-text-fill-color:var(--teal);font-size:.75em}
+
+.gancho-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border)}
+.g-card{background:var(--card);padding:2.5rem 2rem;position:relative;overflow:hidden;transition:background .3s}
+.g-card:hover{background:#0A0C18}
+.g-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--teal),transparent);transform:scaleX(0);transition:transform .5s}
+.g-card:hover::before{transform:scaleX(1)}
+.g-num{font-family:'Bebas Neue',sans-serif;font-size:5rem;line-height:1;color:rgba(95,255,212,.08);position:absolute;top:1rem;right:1.5rem;letter-spacing:.05em}
+.g-icon{font-size:1.8rem;margin-bottom:1rem}
+.g-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.06em;color:var(--text);margin-bottom:.7rem}
+.g-desc{font-size:.72rem;color:var(--muted2);line-height:1.9;font-family:'Space Mono',monospace}
+.g-tag{display:inline-block;margin-top:1rem;font-size:.52rem;letter-spacing:.15em;text-transform:uppercase;padding:.25rem .7rem;border:1px solid rgba(95,255,212,.25);color:var(--teal);background:rgba(95,255,212,.04)}
+
+/* ── PACKAGES ── */
+.paquetes{padding:5rem 2.5rem;position:relative;z-index:1;max-width:1200px;margin:0 auto}
+
+.pkg-tabs{display:flex;gap:0;border:1px solid var(--border2);margin-bottom:2.5rem;overflow:hidden}
+.pkg-tab{flex:1;padding:.65rem 1rem;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;font-family:'Space Mono',monospace;background:transparent;border:none;color:var(--muted2);cursor:pointer;transition:all .25s;border-right:1px solid var(--border2);position:relative;overflow:hidden}
+.pkg-tab:last-child{border-right:none}
+.pkg-tab::before{content:'';position:absolute;inset:0;background:rgba(95,255,212,.06);transform:scaleY(0);transition:transform .3s;transform-origin:bottom}
+.pkg-tab.active{color:var(--teal);background:rgba(95,255,212,.05)}.pkg-tab.active::before{transform:scaleY(1)}
+.pkg-tab:hover:not(.active){color:var(--text)}
+
+.pkg-panels{position:relative}
+.pkg-panel{display:none;animation:fadeIn .4s ease}
+.pkg-panel.active{display:grid;grid-template-columns:1fr 1.4fr;gap:3rem;align-items:start}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.pkg-info{}
+.pkg-tier{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.pkg-tier::before{content:'';width:1rem;height:1px;background:var(--teal);box-shadow:0 0 6px var(--teal)}
+.pkg-name{font-family:'Bebas Neue',sans-serif;font-size:4rem;letter-spacing:.06em;line-height:.9;margin-bottom:.8rem}
+.pkg-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--muted2);margin-bottom:2rem;line-height:1.6}
+.pkg-price-box{background:var(--card);border:1px solid var(--border2);padding:1.5rem 2rem;margin-bottom:2rem;position:relative;overflow:hidden}
+.pkg-price-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--teal),transparent)}
+.pkg-price-label{font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted2);margin-bottom:.4rem}
+.pkg-price{font-family:'Bebas Neue',sans-serif;font-size:5rem;letter-spacing:.03em;line-height:1;color:var(--teal);text-shadow:0 0 40px rgba(95,255,212,.4)}
+.pkg-price-sub{font-size:.6rem;color:var(--muted2);margin-top:.3rem;letter-spacing:.1em}
+.pkg-cta-btn{display:block;width:100%;padding:.8rem;text-align:center;background:linear-gradient(135deg,var(--teal),var(--teal2));color:var(--bg);font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;transition:all .3s;box-shadow:0 0 30px rgba(95,255,212,.25)}
+.pkg-cta-btn:hover{box-shadow:0 0 60px rgba(95,255,212,.5);transform:translateY(-1px)}
+
+.pkg-features-panel{background:var(--card);border:1px solid var(--border);padding:2rem}
+.pf-title{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:1.5rem;display:flex;align-items:center;gap:.5rem}
+.pf-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent)}
+.pf-list{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.pf-item{display:flex;align-items:flex-start;gap:.8rem;padding:.65rem .8rem;border:1px solid transparent;transition:all .25s;font-size:.7rem;line-height:1.6;font-family:'Space Mono',monospace}
+.pf-item:hover{border-color:var(--border2);background:rgba(95,255,212,.03)}
+.pf-icon{color:var(--teal);flex-shrink:0;margin-top:.1rem;font-size:.7rem}
+.pf-item.new-feat{color:var(--teal2)}
+.pf-item.new-feat .pf-icon{color:var(--magenta)}
+.pf-item strong{color:var(--text)}
+.new-badge{display:inline-block;background:var(--magenta);color:white;font-size:.45rem;font-weight:700;letter-spacing:.12em;padding:.12rem .4rem;margin-left:.4rem;vertical-align:middle;animation:pulse-badge 2s ease-in-out infinite}
+@keyframes pulse-badge{0%,100%{box-shadow:0 0 0 0 rgba(255,45,122,.4)}50%{box-shadow:0 0 10px 3px rgba(255,45,122,.2)}}
+
+.popular-strip{background:var(--magenta);color:white;font-size:.52rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:.3rem 1rem;display:inline-block;margin-bottom:.5rem;box-shadow:0 0 20px rgba(255,45,122,.4)}
+
+/* ── ADDON ── */
+.addon-section{padding:0 2.5rem 5rem;max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.addon-card{background:var(--card);border:1px solid var(--border2);padding:2.5rem;display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:center;position:relative;overflow:hidden}
+.addon-card::before{content:'REDES CONTINUAS';position:absolute;right:-2rem;top:50%;transform:translateY(-50%) rotate(90deg);font-family:'Bebas Neue',sans-serif;font-size:3rem;color:rgba(95,255,212,.04);letter-spacing:.2em;white-space:nowrap;pointer-events:none}
+.addon-label{font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--magenta);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.addon-label::before{content:'';width:.8rem;height:1px;background:var(--magenta);box-shadow:0 0 6px var(--magenta)}
+.addon-name{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.06em;color:var(--text);margin-bottom:.8rem}
+.addon-desc{font-size:.7rem;color:var(--muted2);line-height:1.8;max-width:500px;margin-bottom:1rem}
+.addon-tags{display:flex;gap:.6rem;flex-wrap:wrap}
+.addon-tag{font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;padding:.22rem .7rem;border:1px solid rgba(95,255,212,.2);color:var(--teal)}
+.addon-right{text-align:right}
+.addon-price{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:var(--teal);line-height:1;text-shadow:0 0 30px rgba(95,255,212,.3)}
+.addon-price-sub{font-size:.6rem;color:var(--muted2);margin-top:.2rem;margin-bottom:1rem;letter-spacing:.1em}
+.addon-btn{display:inline-block;background:transparent;border:1px solid var(--teal);color:var(--teal);padding:.55rem 1.4rem;font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;transition:all .25s}
+.addon-btn:hover{background:var(--teal);color:var(--bg);box-shadow:0 0 30px rgba(95,255,212,.3)}
+
+/* ── COMPARE TABLE ── */
+.compare{padding:0 2.5rem 6rem;max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.cmp-table{width:100%;border-collapse:collapse;border:1px solid var(--border)}
+.cmp-table th{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;padding:1rem 1.2rem;border-bottom:1px solid var(--border);text-align:center;font-family:'Space Mono',monospace;font-weight:400;background:rgba(95,255,212,.03)}
+.cmp-table th:first-child{text-align:left;color:var(--muted2)}
+.cmp-table th.h1{color:#1D9E75}.cmp-table th.h2{color:#2E7DD4}.cmp-table th.h3{color:var(--gold)}.cmp-table th.h4{color:var(--teal)}
+.cmp-table td{font-size:.72rem;padding:.7rem 1.2rem;border-bottom:1px solid rgba(95,255,212,.04);text-align:center;font-family:'Space Mono',monospace;transition:background .2s}
+.cmp-table td:first-child{text-align:left;color:var(--muted2);font-size:.68rem}
+.cmp-table tr:hover td{background:rgba(95,255,212,.02)}
+.cmp-table td.yes{color:var(--teal)}
+.cmp-table td.no{color:var(--muted);opacity:.3}
+.cmp-table td.val{color:var(--text);font-weight:700}
+
+/* ── SERVICES GRID ── */
+.services{padding:5rem 2.5rem 6rem;max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.srv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:3rem}
+.srv-item{background:var(--card);padding:1.8rem;position:relative;overflow:hidden;transition:all .3s;cursor:default}
+.srv-item:hover{background:#0A0C18}
+.srv-item::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(95,255,212,.06),transparent 65%);opacity:0;transition:opacity .3s;pointer-events:none}
+.srv-item:hover::after{opacity:1}
+.srv-ico{font-size:1.5rem;margin-bottom:.8rem;display:block}
+.srv-name{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.06em;color:var(--text);margin-bottom:.5rem}
+.srv-desc{font-size:.65rem;color:var(--muted2);line-height:1.8;font-family:'Space Mono',monospace}
+.srv-new-badge{display:inline-block;font-size:.48rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;background:var(--magenta);color:white;padding:.15rem .5rem;margin-bottom:.5rem;box-shadow:0 0 12px rgba(255,45,122,.4)}
+
+/* ── CTA ── */
+.cta{padding:8rem 2.5rem;text-align:center;position:relative;z-index:1;overflow:hidden}
+.cta-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;border:1px solid rgba(95,255,212,.05);border-radius:50%;animation:ring-pulse 4s ease-in-out infinite}
+.cta-ring2{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;border:1px solid rgba(95,255,212,.08);border-radius:50%;animation:ring-pulse 4s ease-in-out infinite .7s}
+.cta-ring3{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:200px;border:1px solid rgba(95,255,212,.12);border-radius:50%;animation:ring-pulse 4s ease-in-out infinite 1.4s}
+@keyframes ring-pulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1}50%{transform:translate(-50%,-50%) scale(1.05);opacity:.6}}
+.cta-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,8vw,8rem);letter-spacing:.05em;line-height:.88;margin-bottom:1.5rem;position:relative}
+.cta-h .c1{display:block;color:var(--text)}
+.cta-h .c2{display:block;background:linear-gradient(135deg,var(--teal),#99FFE8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cta-h .c3{display:block;color:var(--text)}
+.cta-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--muted2);max-width:500px;margin:0 auto 2.5rem;line-height:1.8;position:relative}
+.cta-contacts{display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;margin-top:3rem;padding-top:2.5rem;border-top:1px solid var(--border);position:relative}
+.contact-block .cl{font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
+.contact-block .cv{font-size:.8rem;color:var(--teal2)}.contact-block .cv a{color:inherit;text-decoration:none}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:1.5rem 2.5rem;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;background:rgba(3,4,10,.8)}
+.f-logo{font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:.15em;color:var(--text)}
+.f-logo span{color:var(--teal)}
+.f-copy{font-size:.55rem;letter-spacing:.1em;color:var(--muted);font-family:'Space Mono',monospace}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.1s}.reveal.d2{transition-delay:.2s}.reveal.d3{transition-delay:.3s}
+
+/* ── GLITCH ── */
+.glitch{position:relative}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%}
+.glitch::before{color:var(--magenta);animation:glitch1 4s infinite;clip-path:polygon(0 20%,100% 20%,100% 40%,0 40%)}
+.glitch::after{color:var(--teal);animation:glitch2 4s infinite;clip-path:polygon(0 60%,100% 60%,100% 80%,0 80%)}
+@keyframes glitch1{0%,90%,100%{transform:none;opacity:0}91%{transform:translateX(-3px);opacity:.6}92%{transform:translateX(2px);opacity:.4}93%{transform:none;opacity:0}}
+@keyframes glitch2{0%,88%,100%{transform:none;opacity:0}89%{transform:translateX(3px);opacity:.5}90%{transform:translateX(-2px);opacity:.3}91%{transform:none;opacity:0}}
+
+/* ── WEB SECTION ── */
+.web-section{padding:5rem 2.5rem 6rem;max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.web-isolated{display:inline-flex;align-items:center;gap:.6rem;background:rgba(245,200,66,.06);border:1px solid rgba(245,200,66,.25);padding:.3rem .9rem;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem}
+.web-isolated-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:blink 1.5s ease-in-out infinite}
+.web-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.2);margin-top:3rem}
+.web-card{background:var(--card);padding:2.5rem;position:relative;overflow:hidden;transition:background .3s}
+.web-card:hover{background:#0A0C18}
+.web-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.web-card.basic::before{background:linear-gradient(90deg,#1D9E75,transparent)}
+.web-card.full::before{background:linear-gradient(90deg,var(--gold),transparent)}
+.web-card-label{font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.web-card.basic .web-card-label{color:#1D9E75}.web-card.full .web-card-label{color:var(--gold)}
+.web-card-label::before{content:'';width:.8rem;height:1px;background:currentColor;box-shadow:0 0 6px currentColor}
+.web-card-name{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;letter-spacing:.06em;line-height:.9;margin-bottom:.5rem}
+.web-card.basic .web-card-name{color:var(--text)}.web-card.full .web-card-name{background:linear-gradient(135deg,var(--gold),#FFE97A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.web-card-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--muted2);margin-bottom:1.8rem;line-height:1.6}
+.web-price-box{background:rgba(3,4,10,.6);border:1px solid;padding:1.2rem 1.5rem;margin-bottom:1.8rem}
+.web-card.basic .web-price-box{border-color:rgba(29,158,117,.2)}.web-card.full .web-price-box{border-color:rgba(245,200,66,.25)}
+.web-price{font-family:'Bebas Neue',sans-serif;font-size:4rem;letter-spacing:.03em;line-height:1}
+.web-card.basic .web-price{color:#1D9E75;text-shadow:0 0 30px rgba(29,158,117,.35)}.web-card.full .web-price{color:var(--gold);text-shadow:0 0 30px rgba(245,200,66,.35)}
+.web-price-sub{font-size:.58rem;color:var(--muted2);margin-top:.3rem;letter-spacing:.1em}
+.web-features{list-style:none;display:flex;flex-direction:column;gap:.4rem;margin-bottom:2rem}
+.web-feat{display:flex;align-items:flex-start;gap:.75rem;padding:.55rem .7rem;border:1px solid transparent;transition:all .25s;font-size:.67rem;line-height:1.6;font-family:'Space Mono',monospace;color:var(--muted2)}
+.web-feat:hover{border-color:var(--border2);background:rgba(95,255,212,.02);color:var(--text)}
+.web-feat-ico{flex-shrink:0;margin-top:.08rem}
+.web-card.basic .web-feat-ico{color:#1D9E75}.web-card.full .web-feat-ico{color:var(--gold)}
+.web-feat strong{color:var(--text)}
+.web-cta{display:block;width:100%;padding:.8rem;text-align:center;font-family:'Space Mono',monospace;font-size:.62rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;transition:all .3s;border:1px solid}
+.web-card.basic .web-cta{border-color:#1D9E75;color:#1D9E75}.web-card.basic .web-cta:hover{background:#1D9E75;color:var(--bg);box-shadow:0 0 30px rgba(29,158,117,.35)}
+.web-card.full .web-cta{border-color:var(--gold);color:var(--gold)}.web-card.full .web-cta:hover{background:var(--gold);color:var(--bg);box-shadow:0 0 30px rgba(245,200,66,.35)}
+.web-note{margin-top:1.5rem;font-size:.62rem;color:var(--muted2);text-align:center;font-family:'Space Mono',monospace;padding:.8rem 1.2rem;border:1px solid var(--border);line-height:1.8}
+.web-note strong{color:var(--teal)}
+.web-bg-label{position:absolute;bottom:1.5rem;right:1.5rem;font-family:'Bebas Neue',sans-serif;font-size:5rem;letter-spacing:.15em;opacity:.03;pointer-events:none;line-height:1;color:var(--gold)}
+
+@media(max-width:900px){
+  .pkg-panel.active{grid-template-columns:1fr}
+  .gancho-grid{grid-template-columns:1fr}
+  .srv-grid{grid-template-columns:1fr 1fr}
+  .addon-card{grid-template-columns:1fr}
+  .addon-right{text-align:left}
+  .web-grid{grid-template-columns:1fr}
+  body{cursor:auto}
+  #cursor,#cursor-ring{display:none}
+}
+@media(max-width:580px){
+  .hero-stats{flex-direction:column}.hstat{border-right:none;border-bottom:1px solid var(--border2)}
+  .srv-grid{grid-template-columns:1fr}
+  .pkg-tabs{flex-direction:column}
+  nav{padding:0 1.2rem}
+  .gancho,.paquetes,.services,.compare,.addon-section,.cta{padding-left:1.2rem;padding-right:1.2rem}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="c"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="logo-mark">
+    <div class="logo-hex"></div>
+    <div class="logo-text">ROPS <span>SMART</span> ADVERTISING</div>
+  </div>
+  <div class="nav-right">
+  <a href="/" style="display:inline-flex;align-items:center;gap:.5rem;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(95,255,212,.5);text-decoration:none;transition:color .2s;margin-right:1rem" onmouseover="this.style.color='rgb(95,255,212)'" onmouseout="this.style.color='rgba(95,255,212,.5)'">
+    ← ROPS Principal
+  </a>
+    <a href="#paquetes" class="nav-link">Paquetes</a>
+    <a href="#web" class="nav-link">Páginas Web</a>
+    <a href="#servicios" class="nav-link">Servicios</a>
+    <a href="#comparar" class="nav-link">Comparar</a>
+    <a href="https://wa.me/17087657465" class="nav-btn" target="_blank"><span>Cotizar →</span></a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-status"><span class="status-dot"></span>Sistema activo · Guadalajara & Chicago</div>
+  <h1 class="hero-h">
+    <span class="line-ghost glitch" data-text="SMART">SMART</span>
+    <span class="line-main">ADVERTISING</span>
+    <span class="line-accent">ROPS™</span>
+  </h1>
+  <p class="hero-sub">"Tu restaurante visto por todos. Deseado por todos." — Un ecosistema digital completo con un único pago y la tecnología de IA más avanzada del mercado restaurantero.</p>
+  <div class="hero-btns">
+    <a href="#paquetes" class="btn-glow">Explorar paquetes →</a>
+    <a href="https://wa.me/17087657465" class="btn-outline" target="_blank">WhatsApp directo</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-n">$3K</div><div class="hstat-l">Desde · MXN único</div></div>
+    <div class="hstat"><div class="hstat-n">4</div><div class="hstat-l">Paquetes digitales</div></div>
+    <div class="hstat"><div class="hstat-n">+18%</div><div class="hstat-l">Ticket promedio QR</div></div>
+    <div class="hstat"><div class="hstat-n">100%</div><div class="hstat-l">IA + Estrategia</div></div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item"><strong>Menú QR</strong><span class="ticker-sep">·</span></span>
+    <span class="ticker-item"><strong>Fotografía IA</strong><span class="ticker-sep">·</span></span>
+    <span class="ticker-item"><strong>Comercial con IA</strong> <span style="color:var(--magenta)">NUEVO</span><span class="ticker-sep">·</span></span>
+    <span class="ticker-item"><strong>Flyers Animados</strong><span class="ticker-sep">·</span></span>
+    <span class="ticker-item"><strong>Gestión de Reseñas</strong><span class="ticker-sep">·</span></span>
+    <span class="ticker-item"><strong>Email/WhatsApp Marketing</strong><span class="ticker-sep">·</span></span>
+    <span class="ticker-item"><strong>Video Platillos</strong><span class="ticker-sep">·</span></span>
+    <span class="ticker-item"><strong>Video de Marca</strong><span class="ticker-sep">·</span></span>
+    <span class="ticker-item"><strong>Dashboard Métricas</strong><span class="ticker-sep">·</span></span>
+    <span class="ticker-item"><strong>Menú QR</strong><span class="ticker-sep">·</span></span>
+    <span class="ticker-item"><strong>Fotografía IA</strong><span class="ticker-sep">·</span></span>
+    <span class="ticker-item"><strong>Comercial con IA</strong> <span style="color:var(--magenta)">NUEVO</span><span class="ticker-sep">·</span></span>
+    <span class="ticker-item"><strong>Flyers Animados</strong><span class="ticker-sep">·</span></span>
+    <span class="ticker-item"><strong>Gestión de Reseñas</strong><span class="ticker-sep">·</span></span>
+    <span class="ticker-item"><strong>Email/WhatsApp Marketing</strong><span class="ticker-sep">·</span></span>
+    <span class="ticker-item"><strong>Video Platillos</strong><span class="ticker-sep">·</span></span>
+    <span class="ticker-item"><strong>Video de Marca</strong><span class="ticker-sep">·</span></span>
+    <span class="ticker-item"><strong>Dashboard Métricas</strong><span class="ticker-sep">·</span></span>
+  </div>
+</div>
+
+<!-- GANCHO -->
+<section class="gancho" id="modelo">
+  <div class="section-tag reveal"><span class="tag-line"></span><span class="tag-txt">El modelo ROPS</span></div>
+  <h2 class="section-h reveal">UN PAGO ÚNICO.<br><em>Un gancho inteligente.</em></h2>
+  <div class="gancho-grid reveal">
+    <div class="g-card">
+      <div class="g-num">01</div>
+      <div class="g-icon">💳</div>
+      <div class="g-title">Pago único</div>
+      <div class="g-desc">El cliente invierte una sola vez y recibe su ecosistema digital completo. Sin mensualidades ocultas, sin compromisos ni contratos forzosos.</div>
+      <span class="g-tag">Sin sorpresas</span>
+    </div>
+    <div class="g-card">
+      <div class="g-num">02</div>
+      <div class="g-icon">🚀</div>
+      <div class="g-title">Resultados visibles</div>
+      <div class="g-desc">Desde el primer mes ve su restaurante digitalizado: menú QR, contenido profesional, fotos IA, comercial. El impacto es inmediato y medible.</div>
+      <span class="g-tag">Mes 1 activo</span>
+    </div>
+    <div class="g-card">
+      <div class="g-num">03</div>
+      <div class="g-icon">🎯</div>
+      <div class="g-title">El gancho natural</div>
+      <div class="g-desc">Al ver resultados, el cliente quiere continuar. Sin presión de venta. El producto se vende solo. Ahí entra el manejo semanal de redes por $1,000 MXN/semana.</div>
+      <span class="g-tag">$1,000 MXN/sem · sin contrato · pago cada lunes</span>
+    </div>
+  </div>
+</section>
+
+<!-- PAQUETES -->
+<section class="paquetes" id="paquetes">
+  <div class="section-tag reveal"><span class="tag-line"></span><span class="tag-txt">Paquetes digitales ROPS</span></div>
+  <h2 class="section-h reveal">ELIGE TU<br><em>nivel de impacto.</em></h2>
+
+  <div class="pkg-tabs reveal">
+    <button class="pkg-tab active" onclick="switchPkg(0,this)">01 · Arranque $5,000</button>
+    <button class="pkg-tab" onclick="switchPkg(1,this)">02 · Presencia</button>
+    <button class="pkg-tab" onclick="switchPkg(2,this)">⭐ 03 · Impacto</button>
+    <button class="pkg-tab" onclick="switchPkg(3,this)">04 · Ecosistema</button>
+  </div>
+
+  <div class="pkg-panels">
+
+    <!-- ARRANQUE -->
+    <div class="pkg-panel active" id="panel-0">
+      <div class="pkg-info">
+        <div class="pkg-tier">Paquete 01</div>
+        <div class="pkg-name">ARRANQUE<br>DIGITAL</div>
+        <div class="pkg-tagline">El primer paso digital de tu restaurante. Empieza a existir en el mundo digital con lo esencial.</div>
+        <div class="pkg-price-box">
+          <div class="pkg-price-label">// Pago semanal · Sin contrato forzoso</div>
+          <div class="pkg-price">$5,000</div>
+          <div class="pkg-price-sub">MXN · pago único · sin contrato</div>
+        </div>
+        <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20Paquete%20Arranque%20Digital%20de%20%241%2C500%20MXN%20por%20semana" class="pkg-cta-btn" target="_blank">Contratar Arranque Digital →</a>
+      </div>
+      <div class="pkg-features-panel">
+        <div class="pf-title">Incluye</div>
+        <ul class="pf-list">
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>Menú Digital QR</strong> — QR personalizado con diseño de marca, menú responsive claro en móvil, categorías y descripciones optimizadas</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>1 publicación diaria</strong> en todas las redes del restaurante con copy estratégico e IA</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>1 historia diaria</strong> en todas las redes en horarios estratégicos de mayor tráfico</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>2 fotos gastronómicas IA</strong> / mes — platillos mejorados con inteligencia artificial</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>Gestión de reseñas IA</strong> — Respuestas estratégicas en Google Maps + Facebook</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>Calendario estratégico mensual</strong> — planeación de contenido con fechas clave, eventos y promociones del mes</div></li>
+          <li class="pf-item new-feat"><span class="pf-icon">⚡</span><div><strong>Dashboard de avances y resultados</strong> — seguimiento real de tu crecimiento digital</div></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PRESENCIA -->
+    <div class="pkg-panel" id="panel-1">
+      <div class="pkg-info">
+        <div class="pkg-tier">Paquete 02</div>
+        <div class="pkg-name">PRESENCIA<br>DIGITAL</div>
+        <div class="pkg-tagline">Profesional desde el primer día. Tu marca visible y deseada en todas las plataformas que importan.</div>
+        <div class="pkg-price-box">
+          <div class="pkg-price-label">// Pago único · Sin mensualidad</div>
+          <div class="pkg-price">$7,500</div>
+          <div class="pkg-price-sub">MXN · pago único · sin contrato</div>
+        </div>
+        <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20Paquete%20Presencia%20Digital%20de%20%244%2C500%20MXN" class="pkg-cta-btn" target="_blank">Contratar Presencia Digital →</a>
+      </div>
+      <div class="pkg-features-panel">
+        <div class="pf-title">Todo del paquete 01 +</div>
+        <ul class="pf-list">
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>Menú Digital QR</strong> — QR personalizado con diseño de marca, menú responsive claro en móvil, categorías y descripciones optimizadas</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>2 publicaciones diarias</strong> — contenido estratégico doble para mayor alcance orgánico</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>2 historias diarias</strong> publicadas en horarios estratégicos de mayor tráfico</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>Sección de platillos</strong> mejorada completamente con IA — la carta entera</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>6 fotos gastronómicas IA</strong> / mes — imágenes premium para redes y menú</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>Gestión de reseñas IA · 3 plataformas</strong> — Google + Facebook + Instagram</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>1 Comercial de tu restaurante con IA</strong> — video comercial profesional producido con inteligencia artificial</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>Calendario estratégico mensual</strong> — planeación de contenido con fechas clave, eventos y promociones del mes</div></li>
+          <li class="pf-item new-feat"><span class="pf-icon">⚡</span><div><strong>1 Flyer animado profesional</strong> — tu logo y platillos cobran vida en video</div></li>
+          <li class="pf-item new-feat"><span class="pf-icon">⚡</span><div><strong>Dashboard de avances y resultados</strong> — seguimiento real de tu crecimiento digital</div></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- IMPACTO -->
+    <div class="pkg-panel" id="panel-2">
+      <div class="pkg-info">
+        <div class="popular-strip">⭐ Más popular</div>
+        <div class="pkg-tier">Paquete 03</div>
+        <div class="pkg-name">IMPACTO<br>DIGITAL</div>
+        <div class="pkg-tagline">Contenido de marca real que convierte. Presencia máxima con video profesional y comerciales IA.</div>
+        <div class="pkg-price-box">
+          <div class="pkg-price-label">// Pago único · Sin mensualidad</div>
+          <div class="pkg-price">$9,000</div>
+          <div class="pkg-price-sub">MXN · pago único · sin contrato</div>
+        </div>
+        <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20Paquete%20Impacto%20Digital%20de%20%248%2C000%20MXN" class="pkg-cta-btn" target="_blank">Contratar Impacto Digital →</a>
+      </div>
+      <div class="pkg-features-panel">
+        <div class="pf-title">Todo del paquete 02 +</div>
+        <ul class="pf-list">
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>Menú Digital QR</strong> — QR personalizado con diseño de marca, menú responsive claro en móvil, categorías y descripciones optimizadas</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>3 publicaciones diarias</strong> — máxima presencia orgánica en redes sociales</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>3 historias diarias</strong> en horarios estratégicos — máximo alcance</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>Fotos platillos + bebidas IA</strong> — sección completa de menú visual mejorada</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>Video platillos &amp; bebidas</strong> — video profesional estilo marca, alta producción</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>1 Comercial IA de tu restaurante</strong> — producido íntegramente con IA</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>12 fotos IA</strong> / mes + <strong>2 campañas Email/WhatsApp</strong> / mes de retención</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>Calendario estratégico mensual</strong> — planeación de contenido con fechas clave, eventos y promociones del mes</div></li>
+          <li class="pf-item new-feat"><span class="pf-icon">⚡</span><div><strong>2 Flyers animados profesionales</strong> — tu logo y platillos cobran vida en video</div></li>
+          <li class="pf-item new-feat"><span class="pf-icon">⚡</span><div><strong>Dashboard de avances y resultados</strong> — seguimiento real de tu crecimiento digital</div></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ECOSISTEMA -->
+    <div class="pkg-panel" id="panel-3">
+      <div class="pkg-info">
+        <div class="pkg-tier">Paquete 04</div>
+        <div class="pkg-name">ECOSISTEMA<br>ROPS</div>
+        <div class="pkg-tagline">El ecosistema digital más completo del mercado restaurantero. Sin igual. Sin límites.</div>
+        <div class="pkg-price-box">
+          <div class="pkg-price-label">// Pago único · Sin mensualidad</div>
+          <div class="pkg-price">$14,000</div>
+          <div class="pkg-price-sub">MXN · pago único · sin contrato</div>
+        </div>
+        <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20Paquete%20Ecosistema%20ROPS%20de%20%2413%2C000%20MXN" class="pkg-cta-btn" target="_blank">Contratar Ecosistema ROPS →</a>
+      </div>
+      <div class="pkg-features-panel">
+        <div class="pf-title">Todo del paquete 03 +</div>
+        <ul class="pf-list">
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>QR Avanzado + Analytics</strong> — tracking real de escaneos + integración completa</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>Hasta 20 fotos IA</strong> / mes — cobertura fotográfica total de todas las áreas</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>Video de marca restaurante</strong> — producción de alto nivel · identidad visual completa</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>2 Comerciales con IA</strong> — dos comerciales profesionales · máximo impacto</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>4 campañas Email/WhatsApp</strong> / mes — retención máxima + eventos + cumpleaños</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>Dashboard métricas</strong> en tiempo real + <strong>reunión estratégica</strong> mensual 1hr con Raymundo</div></li>
+          <li class="pf-item"><span class="pf-icon">▸</span><div><strong>Calendario estratégico mensual</strong> — planeación de contenido con fechas clave, eventos y promociones del mes</div></li>
+          <li class="pf-item new-feat"><span class="pf-icon">⚡</span><div><strong>2 Flyers animados profesionales</strong> — tu logo y platillos cobran vida en video</div></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ADDON -->
+<div class="addon-section">
+  <div class="addon-card reveal">
+    <div>
+      <div class="addon-label">Servicio semanal continuo · Sin contrato forzoso</div>
+      <div class="addon-name">GESTIÓN SEMANAL ESENCIAL</div>
+      <div class="addon-desc">Para restaurantes que quieren presencia digital activa semana a semana sin comprometerse a largo plazo. Pago cada lunes, cancela cuando quieras. Contenido real, reseñas atendidas y calendario estratégico — todo incluido.</div>
+      <div class="addon-tags">
+        <span class="addon-tag">1 publicación diaria en todas las redes</span>
+        <span class="addon-tag">1 historia diaria en todas las redes</span>
+        <span class="addon-tag">Calendario estratégico mensual</span>
+        <span class="addon-tag">Contestación de reseñas</span>
+        <span class="addon-tag">Pago cada lunes · Sin contrato</span>
+      </div>
+    </div>
+    <div class="addon-right">
+      <div class="addon-price">$1,500</div>
+      <div class="addon-price-sub">MXN / semana · pago cada lunes · sin contrato</div>
+      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20la%20Gesti%C3%B3n%20Semanal%20Esencial%20(%241%2C500%20MXN%2Fsemana)" class="addon-btn" target="_blank">Activar Gestión Semanal →</a>
+    </div>
+  </div>
+</div>
+
+<!-- TABLA COMPARATIVA -->
+<div class="compare" id="comparar">
+  <div class="section-tag reveal"><span class="tag-line"></span><span class="tag-txt">Comparativa de paquetes</span></div>
+  <h2 class="section-h reveal" style="font-size:3.5rem">TODO DE UN<br><em>vistazo.</em></h2>
+  <table class="cmp-table reveal">
+    <thead>
+      <tr>
+        <th></th>
+        <th class="h1">Arranque<br>$5K MXN</th>
+        <th class="h2">Presencia<br>$7.5K MXN</th>
+        <th class="h3">Impacto<br>$9K MXN</th>
+        <th class="h4">Ecosistema<br>$14K MXN</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Menú Digital QR</td><td class="yes">✓ Básico</td><td class="yes">✓ Básico</td><td class="yes">✓ Básico</td><td class="yes">✓ Avanzado</td></tr>
+      <tr><td>Publicaciones / día</td><td class="val">1</td><td class="val">2</td><td class="val">3</td><td class="val">3</td></tr>
+      <tr><td>Historias / día</td><td class="val">2</td><td class="val">2</td><td class="val">3</td><td class="val">3</td></tr>
+      <tr><td>Fotos gastronómicas IA</td><td class="val">2/mes</td><td class="val">6/mes</td><td class="val">12/mes</td><td class="val">Hasta 20</td></tr>
+      <tr><td>Gestión reseñas IA</td><td class="yes">Google+FB</td><td class="yes">+Instagram</td><td class="yes">Completa</td><td class="yes">Completa</td></tr>
+      <tr><td>Comercial con IA</td><td class="no">—</td><td class="yes">1</td><td class="yes">1</td><td class="yes">2</td></tr>
+      <tr><td>Video platillos & bebidas</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+      <tr><td>Video de marca</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+      <tr><td>Campañas Email/WA</td><td class="no">—</td><td class="val">1/mes</td><td class="val">2/mes</td><td class="val">4/mes</td></tr>
+      <tr><td>Dashboard + reunión</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- MENU QR INDEPENDIENTE -->
+<section class="services" id="servicios" style="padding:5rem 2.5rem;max-width:1200px;margin:0 auto;position:relative;z-index:1">
+  <div class="section-tag reveal"><span class="tag-line"></span><span class="tag-txt">Servicio independiente</span></div>
+  <h2 class="section-h reveal">MENÚ DIGITAL QR.<br><em>Tu carta en el móvil.</em></h2>
+  <div class="addon-card reveal" style="margin-top:3rem">
+    <div>
+      <div class="addon-label">Servicio individual · Pago único · Sin mensualidad</div>
+      <div class="addon-name">MENÚ DIGITAL QR ROPS</div>
+      <div class="addon-desc">Tu menú físico convertido en una experiencia digital profesional. QR personalizado con tu marca, diseño responsive que se ve perfecto en cualquier celular, categorías claras y descripciones optimizadas para vender más.</div>
+      <div class="addon-tags">
+        <span class="addon-tag">QR personalizado de marca</span>
+        <span class="addon-tag">Menú responsive claro en móvil</span>
+        <span class="addon-tag">Categorías claras</span>
+        <span class="addon-tag">Descripciones optimizadas</span>
+        <span class="addon-tag">Pago único · Sin mensualidad</span>
+      </div>
+    </div>
+    <div class="addon-right">
+      <div class="addon-price">$2,000</div>
+      <div class="addon-price-sub">MXN · pago único · sin contrato</div>
+      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20Men%C3%BA%20Digital%20QR%20ROPS%20(%242%2C000%20MXN)" class="addon-btn" target="_blank">Contratar Menú QR →</a>
+    </div>
+  </div>
+</section>
+
+<!-- WEB SERVICES -->
+<section class="web-section" id="web">
+  <div class="web-isolated reveal"><span class="web-isolated-dot"></span>Servicio independiente · No incluido en ningún paquete</div>
+  <div class="section-tag reveal"><span class="tag-line"></span><span class="tag-txt">Páginas Web para Restaurantes</span></div>
+  <h2 class="section-h reveal">TU RESTAURANTE<br><em>en el internet.</em></h2>
+  <p class="reveal" style="font-size:.78rem;color:var(--muted2);max-width:600px;line-height:1.9;font-family:'Space Mono',monospace;margin-top:-.5rem">Dos niveles de presencia web, diseñados específicamente para restaurantes. Desde el sitio esencial hasta el ecosistema digital completo con menú dinámico, reservas, SEO local y analíticas avanzadas.</p>
+
+  <div class="web-grid reveal">
+
+    <!-- BÁSICO -->
+    <div class="web-card basic">
+      <div class="web-bg-label">WEB</div>
+      <div class="web-card-label">Página Web · Nivel 01</div>
+      <div class="web-card-name">PRESENCIA<br>WEB BÁSICA</div>
+      <div class="web-card-tagline">Tu restaurante existe en internet. Profesional, seguro y siempre en línea. El punto de partida digital que todo negocio necesita.</div>
+      <div class="web-price-box">
+        <div class="web-price-sub">// Pago único · anualidad incluida</div>
+        <div class="web-price">$6,000</div>
+        <div class="web-price-sub">MXN · todo incluido el primer año</div>
+      </div>
+      <ul class="web-features">
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Página web profesional</strong> — diseño responsivo, rápido y adaptado a la identidad del restaurante</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Certificado SSL</strong> — sitio seguro con candado verde (https) · protección de datos del usuario</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Hosting básico incluido</strong> — alojamiento web por 12 meses · sin pagos sorpresa</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Dominio</strong> — turestaurante.com o .mx gestionado el primer año</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Secciones esenciales</strong> — inicio, menú (PDF), contacto, ubicación y horarios</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Integración Google Maps</strong> — mapa embed con dirección y botón "¿Cómo llegar?"</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Botón WhatsApp flotante</strong> — contacto directo desde cualquier página del sitio</div></li>
+      </ul>
+      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20servicio%20de%20P%C3%A1gina%20Web%20B%C3%A1sica%20de%20%246%2C000%20MXN" class="web-cta" target="_blank">Contratar Presencia Web →</a>
+    </div>
+
+    <!-- FULL -->
+    <div class="web-card full">
+      <div class="web-bg-label">PRO</div>
+      <div class="web-card-label">Página Web · Nivel 02 · Más completo</div>
+      <div class="web-card-name">RESTAURANTE<br>DIGITAL PRO</div>
+      <div class="web-card-tagline">Un ecosistema web completo que trabaja por tu restaurante 24/7. Menú dinámico, reservas automáticas, SEO local y analíticas avanzadas.</div>
+      <div class="web-price-box">
+        <div class="web-price-sub">// Pago único · anualidad incluida</div>
+        <div class="web-price">$16,000</div>
+        <div class="web-price-sub">MXN · todo incluido el primer año</div>
+      </div>
+      <ul class="web-features">
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div>Todo lo del nivel básico +</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Menú Digital Dinámico</strong> — no un PDF estático. Menú que se lee perfecto en móvil y puedes actualizar precios tú mismo desde un panel sencillo, sin saber código</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Sistema de Reservas Integrado</strong> — botones directos a WhatsApp, OpenTable o formulario interno con confirmación automática</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>SEO Local (Google Maps)</strong> — optimización técnica para aparecer cuando alguien busca "comida italiana cerca de mí" o "restaurante en [tu colonia]"</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Fotografía de Alimentos IA</strong> — sesión de fotos mejoradas con IA integradas al sitio. Porque sin fotos profesionales, la web no vende</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>QR Avanzado + Analytics</strong> — tracking de escaneos, análisis de comportamiento e integración directa con el menú dinámico</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>SSL + Hosting Premium</strong> — sitio más rápido, mayor seguridad, backups automáticos · incluido 12 meses</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Dashboard de visitas</strong> — Google Analytics configurado · ve cuánta gente entra a tu sitio y desde dónde</div></li>
+      </ul>
+      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20servicio%20Restaurante%20Digital%20Pro%20de%20%2416%2C000%20MXN" class="web-cta" target="_blank">Contratar Restaurante Digital Pro →</a>
+    </div>
+
+  </div>
+
+  <div class="web-note reveal">
+    <strong>// NOTA IMPORTANTE</strong> — Estos servicios de página web son completamente independientes de los paquetes de contenido y redes sociales ROPS.<br>
+    Puedes contratar la web sola, o combinarla con cualquier paquete de Smart Advertising para una presencia digital 360°.
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="cta-ring"></div>
+  <div class="cta-ring2"></div>
+  <div class="cta-ring3"></div>
+  <h2 class="cta-h">
+    <span class="c1">USTEDES CREAN</span>
+    <span class="c2">EL SABOR.</span>
+    <span class="c1">NOSOTROS LO</span>
+    <span class="c2">HACEMOS DESEABLE.</span>
+  </h2>
+  <p class="cta-sub">Una llamada de 20 minutos. Sin compromiso. Sin costo. Te decimos exactamente qué necesita tu restaurante hoy para dominar el mundo digital.</p>
+  <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;position:relative">
+    <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20quiero%20informaci%C3%B3n%20sobre%20ROPS%20Smart%20Advertising" class="btn-glow" target="_blank" style="font-size:.7rem;padding:.85rem 2.2rem">WhatsApp → Comenzar ahora</a>
+    <a href="mailto:raydant20@outlook.com" class="btn-outline" style="font-size:.7rem;padding:.85rem 2.2rem">Enviar correo</a>
+  </div>
+  <div class="cta-contacts">
+    <div class="contact-block"><div class="cl">Guadalajara MX</div><div class="cv"><a href="tel:+523336672749">+52 (33) 3667-2749</a></div></div>
+    <div class="contact-block"><div class="cl">Chicago USA</div><div class="cv"><a href="tel:+17087657465">+1 (708) 765-7465</a></div></div>
+    <div class="contact-block"><div class="cl">Email</div><div class="cv"><a href="mailto:raydant20@outlook.com">raydant20@outlook.com</a></div></div>
+    <div class="contact-block"><div class="cl">Certificación</div><div class="cv">Lean Six Sigma · ITESM</div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-logo">R.O.P.S <span>SMART</span> ADVERTISING</div>
+  <div class="f-copy">© 2026 ROPS Consulting · Metodología ROPS™ · Guadalajara · Chicago</div>
+</footer>
+
+<script>
+// ── Cursor ────────────────────────────────────────────────────────────────────
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)})();
+
+// ── Canvas stars ─────────────────────────────────────────────────────────────
+const cvs=document.getElementById('c'),ctx=cvs.getContext('2d');
+let W,H;
+function resize(){W=cvs.width=innerWidth;H=cvs.height=innerHeight}
+resize();window.addEventListener('resize',resize);
+
+const stars=Array.from({length:180},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*.8+.1,o:Math.random()*.4+.05,tw:Math.random()*3+1}));
+const nodes=Array.from({length:35},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3}));
+
+let t=0;
+(function anim(){
+  ctx.clearRect(0,0,W,H);
+  t+=.005;
+
+  // Stars twinkle
+  stars.forEach(s=>{
+    const flicker=.5+.5*Math.sin(t*s.tw*2+s.x);
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(95,255,212,${s.o*flicker})`;ctx.fill();
+  });
+
+  // Moving nodes + connections
+  nodes.forEach(n=>{
+    n.x+=n.vx;n.y+=n.vy;
+    if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1;
+    ctx.beginPath();ctx.arc(n.x,n.y,.8,0,Math.PI*2);
+    ctx.fillStyle='rgba(95,255,212,.25)';ctx.fill();
+  });
+  for(let i=0;i<nodes.length;i++){
+    for(let j=i+1;j<nodes.length;j++){
+      const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<150){
+        ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);
+        ctx.strokeStyle=`rgba(95,255,212,${(1-d/150)*.08})`;ctx.lineWidth=.5;ctx.stroke();
+      }
+    }
+  }
+
+  // Cursor glow
+  if(mx||my){
+    const g=ctx.createRadialGradient(mx,my,0,mx,my,200);
+    g.addColorStop(0,'rgba(95,255,212,.04)');g.addColorStop(1,'transparent');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  }
+
+  requestAnimationFrame(anim);
+})();
+
+// ── Package tabs ──────────────────────────────────────────────────────────────
+function switchPkg(idx,btn){
+  document.querySelectorAll('.pkg-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.pkg-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-'+idx).classList.add('active');
+}
+
+// ── Service card glow ─────────────────────────────────────────────────────────
+function moveGlow(e,el){
+  const r=el.getBoundingClientRect();
+  el.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');
+  el.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');
+}
+
+// ── Scroll reveal ─────────────────────────────────────────────────────────────
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}}),{threshold:.07,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// ── Hero entrance ─────────────────────────────────────────────────────────────
+['.hero-status','.hero-h .line-ghost','.hero-h .line-main','.hero-h .line-accent','.hero-sub','.hero-btns','.hero-stats'].forEach((sel,i)=>{
+  const el=document.querySelector(sel);
+  if(!el)return;
+  el.style.cssText=`opacity:0;transform:translateY(25px);transition:opacity .9s ease ${i*.12+.1}s,transform .9s cubic-bezier(.22,1,.36,1) ${i*.12+.1}s`;
+  setTimeout(()=>{el.style.opacity='1';el.style.transform='none'},80);
+});
+
+// ── Nav scroll tint ───────────────────────────────────────────────────────────
+window.addEventListener('scroll',()=>{document.querySelector('nav').style.background=scrollY>80?'rgba(3,4,10,.97)':'rgba(3,4,10,.85)'});
+</script>
+</body>
+</html>

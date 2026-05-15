@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/operaciones", "destination": "/operaciones.html" },
+    { "source": "/digital", "destination": "/digital.html" }
+  ],
+  "cleanUrls": true
+}
