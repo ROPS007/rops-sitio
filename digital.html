@@ -180,6 +180,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;display:flex;ali
 
 /* ── SERVICES GRID ── */
 .services{padding:5rem 2.5rem 6rem;max-width:1200px;margin:0 auto;position:relative;z-index:1}
+
+.srv-tag{font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);background:rgba(95,255,212,.08);border:1px solid rgba(95,255,212,.2);padding:.18rem .55rem;display:inline-block;margin-bottom:.8rem}
+.srv-price{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--teal);line-height:1;text-shadow:0 0 20px rgba(95,255,212,.3);margin-bottom:.6rem}
 .srv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:3rem}
 .srv-item{background:var(--card);padding:1.8rem;position:relative;overflow:hidden;transition:all .3s;cursor:default}
 .srv-item:hover{background:#0A0C18}
@@ -261,7 +264,10 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2.5rem;display:flex;ali
 @media(max-width:900px){
   .pkg-panel.active{grid-template-columns:1fr}
   .gancho-grid{grid-template-columns:1fr}
-  .srv-grid{grid-template-columns:1fr 1fr}
+  
+.srv-tag{font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);background:rgba(95,255,212,.08);border:1px solid rgba(95,255,212,.2);padding:.18rem .55rem;display:inline-block;margin-bottom:.8rem}
+.srv-price{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--teal);line-height:1;text-shadow:0 0 20px rgba(95,255,212,.3);margin-bottom:.6rem}
+.srv-grid{grid-template-columns:1fr 1fr}
   .addon-card{grid-template-columns:1fr}
   .addon-right{text-align:left}
   .web-grid{grid-template-columns:1fr}
@@ -270,7 +276,10 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2.5rem;display:flex;ali
 }
 @media(max-width:580px){
   .hero-stats{flex-direction:column}.hstat{border-right:none;border-bottom:1px solid var(--border2)}
-  .srv-grid{grid-template-columns:1fr}
+  
+.srv-tag{font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);background:rgba(95,255,212,.08);border:1px solid rgba(95,255,212,.2);padding:.18rem .55rem;display:inline-block;margin-bottom:.8rem}
+.srv-price{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--teal);line-height:1;text-shadow:0 0 20px rgba(95,255,212,.3);margin-bottom:.6rem}
+.srv-grid{grid-template-columns:1fr}
   .pkg-tabs{flex-direction:column}
   nav{padding:0 1.2rem}
   .gancho,.paquetes,.services,.compare,.addon-section,.cta{padding-left:1.2rem;padding-right:1.2rem}
@@ -578,10 +587,149 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2.5rem;display:flex;ali
       </div>
     </div>
     <div class="addon-right">
-      <div class="addon-price">$2,000</div>
+      <div class="addon-price">$999</div>
       <div class="addon-price-sub">MXN · pago único · sin contrato</div>
-      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20Men%C3%BA%20Digital%20QR%20ROPS%20(%242%2C000%20MXN)" class="addon-btn" target="_blank">Contratar Menú QR →</a>
+      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20Men%C3%BA%20Digital%20QR%20ROPS%20(%24999%20MXN)" class="addon-btn" target="_blank">Contratar Menú QR →</a>
     </div>
+  </div>
+</section>
+
+
+<!-- SERVICIOS INDIVIDUALES -->
+<section class="services" id="individuales" style="padding:5rem 2.5rem;max-width:1200px;margin:0 auto;position:relative;z-index:1">
+  <div class="section-tag reveal"><span class="tag-line"></span><span class="tag-txt">Servicios individuales</span></div>
+  <h2 class="section-h reveal">PIEZAS QUE<br><em>Construyen tu marca.</em></h2>
+  <p class="reveal" style="font-size:.78rem;color:var(--muted2);max-width:600px;line-height:1.9;font-family:'Space Mono',monospace;margin-top:-.5rem">Cada servicio funciona solo o combinado. Perfectos para restaurantes que quieren arrancar con algo específico antes de un paquete completo.</p>
+
+  <div class="srv-grid reveal" style="margin-top:3rem">
+
+    <!-- Menú Digital + Físico -->
+    <div class="srv-item" onmousemove="moveGlow(event,this)">
+      <div class="srv-tag">Nuevo</div>
+      <div class="srv-name">Menú Digital + Físico</div>
+      <div class="srv-price">$1,499 <span style="font-size:.6rem;color:var(--muted2)">MXN</span></div>
+      <div class="srv-desc">Tu menú digital QR más impresión física profesional. Diseño unificado — digital y en papel con tu marca.</div>
+    </div>
+
+    <!-- Flyer Estático -->
+    <div class="srv-item" onmousemove="moveGlow(event,this)">
+      <div class="srv-tag">Nuevo</div>
+      <div class="srv-name">Flyer Digital Estático</div>
+      <div class="srv-price">$399 <span style="font-size:.6rem;color:var(--muted2)">MXN</span></div>
+      <div class="srv-desc">Flyer profesional estático para redes sociales. Diseño con tu marca, colores y platillo. Listo para publicar.</div>
+    </div>
+
+    <!-- Logo Básico -->
+    <div class="srv-item" onmousemove="moveGlow(event,this)">
+      <div class="srv-tag">Nuevo</div>
+      <div class="srv-name">Logo Profesional Básico</div>
+      <div class="srv-price">$1,499 <span style="font-size:.6rem;color:var(--muted2)">MXN</span></div>
+      <div class="srv-desc">Logo diseñado con estrategia de marca para restaurantes. Incluye versiones horizontal, vertical y en blanco/negro.</div>
+    </div>
+
+    <!-- Logo + Animación -->
+    <div class="srv-item" onmousemove="moveGlow(event,this)">
+      <div class="srv-tag">Nuevo</div>
+      <div class="srv-name">Logo + Animación</div>
+      <div class="srv-price">$1,199 <span style="font-size:.6rem;color:var(--muted2)">MXN</span></div>
+      <div class="srv-desc">Logo profesional más 2 versiones animadas para redes. Tu marca cobra vida con efectos premium.</div>
+    </div>
+
+    <!-- Mantenimiento Web -->
+    <div class="srv-item" onmousemove="moveGlow(event,this)">
+      <div class="srv-tag">Recurrente</div>
+      <div class="srv-name">Mantenimiento Web</div>
+      <div class="srv-price">$399 <span style="font-size:.6rem;color:var(--muted2)">MXN/mes</span></div>
+      <div class="srv-desc">Hosting activo, actualizaciones básicas de contenido y soporte técnico. Sin contrato forzoso — cancela cuando quieras.</div>
+    </div>
+
+    <!-- Flyer Animado Individual -->
+    <div class="srv-item" onmousemove="moveGlow(event,this)">
+      <div class="srv-tag">Popular</div>
+      <div class="srv-name">Flyer Animado Individual</div>
+      <div class="srv-price">$799 <span style="font-size:.6rem;color:var(--muted2)">MXN</span></div>
+      <div class="srv-desc">Un flyer animado premium (MP4 + GIF). Tu logo y platillo cobran vida con efectos de partículas y transiciones cinematográficas.</div>
+    </div>
+
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2rem">
+    <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20un%20servicio%20individual%20de%20ROPS%20Digital" class="addon-btn" target="_blank" style="margin-top:0">Preguntar por un servicio →</a>
+  </div>
+</section>
+
+<!-- COMBOS -->
+<section style="padding:5rem 2.5rem;max-width:1200px;margin:0 auto;position:relative;z-index:1" id="combos">
+  <div class="section-tag reveal"><span class="tag-line"></span><span class="tag-txt">Paquetes Combo</span></div>
+  <h2 class="section-h reveal">TODO LO QUE<br><em>Necesitas. Un precio.</em></h2>
+  <p class="reveal" style="font-size:.78rem;color:var(--muted2);max-width:600px;line-height:1.9;font-family:'Space Mono',monospace;margin-top:-.5rem">Los combos están diseñados para darte presencia digital completa desde el primer día — a un precio menor que si contrataras todo por separado.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem" class="reveal">
+
+    <!-- STARTER TOTAL -->
+    <div style="background:var(--card);border:1px solid var(--border2);padding:2rem;position:relative;overflow:hidden;transition:border-color .3s,transform .4s cubic-bezier(.22,1,.36,1)" onmouseover="this.style.transform='translateY(-8px)';this.style.borderColor='var(--teal3)'" onmouseout="this.style.transform='';this.style.borderColor='var(--border2)'">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal),transparent)"></div>
+      <div style="font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--teal2);margin-bottom:1rem">Combo 01 · Entrada</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.06em;color:var(--text);line-height:1;margin-bottom:.5rem">ROPS STARTER<br>TOTAL</div>
+      <div style="font-size:.7rem;color:var(--muted2);font-style:italic;margin-bottom:1.5rem">Presencia completa desde cero</div>
+      <div style="background:var(--bg);border:1px solid var(--border);padding:1rem 1.2rem;margin-bottom:1.5rem">
+        <div style="font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted2);margin-bottom:.3rem">// Pago único · Sin contrato</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:var(--teal);line-height:1;text-shadow:0 0 30px rgba(95,255,212,.3)">$6,900</div>
+        <div style="font-size:.58rem;color:var(--muted2);margin-top:.2rem">MXN · valor real $7,397 MXN</div>
+      </div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.5rem">
+        <li style="font-size:.72rem;color:var(--muted2);display:flex;gap:.5rem"><span style="color:var(--teal)">▸</span>Menú Digital QR ($999)</li>
+        <li style="font-size:.72rem;color:var(--muted2);display:flex;gap:.5rem"><span style="color:var(--teal)">▸</span>Logo Profesional Básico ($1,499)</li>
+        <li style="font-size:.72rem;color:var(--muted2);display:flex;gap:.5rem"><span style="color:var(--teal)">▸</span>Landing Page Básica ($3,900)</li>
+        <li style="font-size:.72rem;color:var(--muted2);display:flex;gap:.5rem"><span style="color:var(--teal)">▸</span>1 Flyer Estático ($399)</li>
+        <li style="font-size:.72rem;font-weight:600;color:var(--teal);display:flex;gap:.5rem">★ Ahorro real: $1,897 MXN</li>
+      </ul>
+      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20Combo%20ROPS%20Starter%20Total%20(%246%2C900%20MXN)" class="pkg-cta-btn" target="_blank" style="display:inline-block;text-decoration:none">Contratar Starter Total →</a>
+    </div>
+
+    <!-- CRECIMIENTO -->
+    <div style="background:var(--card);border:1px solid var(--teal3);padding:2rem;position:relative;overflow:hidden;transition:border-color .3s,transform .4s cubic-bezier(.22,1,.36,1)" onmouseover="this.style.transform='translateY(-8px)'" onmouseout="this.style.transform=''">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal),var(--teal2),transparent)"></div>
+      <div style="position:absolute;top:.8rem;right:.8rem;background:var(--teal);color:var(--bg);font-size:.5rem;font-weight:700;letter-spacing:.1em;padding:.2rem .6rem">⭐ MÁS POPULAR</div>
+      <div style="font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--teal2);margin-bottom:1rem">Combo 02 · Crecimiento</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.06em;color:var(--text);line-height:1;margin-bottom:.5rem">ROPS<br>CRECIMIENTO</div>
+      <div style="font-size:.7rem;color:var(--muted2);font-style:italic;margin-bottom:1.5rem">Presencia + contenido profesional</div>
+      <div style="background:var(--bg);border:1px solid var(--teal3);padding:1rem 1.2rem;margin-bottom:1.5rem">
+        <div style="font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted2);margin-bottom:.3rem">// Pago único · Sin contrato</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:var(--teal);line-height:1;text-shadow:0 0 30px rgba(95,255,212,.4)">$11,900</div>
+        <div style="font-size:.58rem;color:var(--muted2);margin-top:.2rem">MXN · valor real $15,396 MXN</div>
+      </div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.5rem">
+        <li style="font-size:.72rem;color:var(--muted2);display:flex;gap:.5rem"><span style="color:var(--teal)">▸</span>Todo del Starter Total</li>
+        <li style="font-size:.72rem;color:var(--muted2);display:flex;gap:.5rem"><span style="color:var(--teal)">▸</span>Paquete Presencia Digital ($7,500)</li>
+        <li style="font-size:.72rem;color:var(--muted2);display:flex;gap:.5rem"><span style="color:var(--teal)">▸</span>1 Flyer Animado incluido</li>
+        <li style="font-size:.72rem;color:var(--muted2);display:flex;gap:.5rem"><span style="color:var(--teal)">▸</span>Dashboard de avances</li>
+        <li style="font-size:.72rem;font-weight:600;color:var(--teal);display:flex;gap:.5rem">★ Ahorro real: $3,496 MXN</li>
+      </ul>
+      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20Combo%20ROPS%20Crecimiento%20(%2411%2C900%20MXN)" class="pkg-cta-btn" target="_blank" style="display:inline-block;text-decoration:none">Contratar Crecimiento →</a>
+    </div>
+
+    <!-- TRANSFORMACIÓN DIGITAL -->
+    <div style="background:var(--card);border:1px solid var(--border2);padding:2rem;position:relative;overflow:hidden;transition:border-color .3s,transform .4s cubic-bezier(.22,1,.36,1)" onmouseover="this.style.transform='translateY(-8px)';this.style.borderColor='var(--teal3)'" onmouseout="this.style.transform='';this.style.borderColor='var(--border2)'">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal),transparent)"></div>
+      <div style="font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--teal2);margin-bottom:1rem">Combo 03 · Máximo</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.06em;color:var(--text);line-height:1;margin-bottom:.5rem">ROPS TRANSFORMACIÓN<br>DIGITAL</div>
+      <div style="font-size:.7rem;color:var(--muted2);font-style:italic;margin-bottom:1.5rem">Domina tu mercado completamente</div>
+      <div style="background:var(--bg);border:1px solid var(--border);padding:1rem 1.2rem;margin-bottom:1.5rem">
+        <div style="font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted2);margin-bottom:.3rem">// Pago único · Sin contrato</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:var(--teal);line-height:1;text-shadow:0 0 30px rgba(95,255,212,.3)">$15,900</div>
+        <div style="font-size:.58rem;color:var(--muted2);margin-top:.2rem">MXN · valor real $23,095 MXN</div>
+      </div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.5rem">
+        <li style="font-size:.72rem;color:var(--muted2);display:flex;gap:.5rem"><span style="color:var(--teal)">▸</span>Todo del Crecimiento</li>
+        <li style="font-size:.72rem;color:var(--muted2);display:flex;gap:.5rem"><span style="color:var(--teal)">▸</span>Web Profesional 5 Secciones ($5,900)</li>
+        <li style="font-size:.72rem;color:var(--muted2);display:flex;gap:.5rem"><span style="color:var(--teal)">▸</span>Logo + Animación ($1,199)</li>
+        <li style="font-size:.72rem;color:var(--muted2);display:flex;gap:.5rem"><span style="color:var(--teal)">▸</span>2 Flyers Animados + Dashboard</li>
+        <li style="font-size:.72rem;font-weight:600;color:var(--teal);display:flex;gap:.5rem">★ Ahorro real: $7,195 MXN</li>
+      </ul>
+      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20Combo%20ROPS%20Transformaci%C3%B3n%20Digital%20(%2415%2C900%20MXN)" class="pkg-cta-btn" target="_blank" style="display:inline-block;text-decoration:none">Contratar Transformación →</a>
+    </div>
+
   </div>
 </section>
 
@@ -598,12 +746,12 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2.5rem;display:flex;ali
     <div class="web-card basic">
       <div class="web-bg-label">WEB</div>
       <div class="web-card-label">Página Web · Nivel 01</div>
-      <div class="web-card-name">PRESENCIA<br>WEB BÁSICA</div>
+      <div class="web-card-name">LANDING PAGE<br>BÁSICA</div>
       <div class="web-card-tagline">Tu restaurante existe en internet. Profesional, seguro y siempre en línea. El punto de partida digital que todo negocio necesita.</div>
       <div class="web-price-box">
         <div class="web-price-sub">// Pago único · anualidad incluida</div>
-        <div class="web-price">$6,000</div>
-        <div class="web-price-sub">MXN · todo incluido el primer año</div>
+        <div class="web-price">$3,900</div>
+        <div class="web-price-sub">MXN · pago único · sin contrato</div>
       </div>
       <ul class="web-features">
         <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Página web profesional</strong> — diseño responsivo, rápido y adaptado a la identidad del restaurante</div></li>
@@ -614,19 +762,19 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2.5rem;display:flex;ali
         <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Integración Google Maps</strong> — mapa embed con dirección y botón "¿Cómo llegar?"</div></li>
         <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Botón WhatsApp flotante</strong> — contacto directo desde cualquier página del sitio</div></li>
       </ul>
-      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20servicio%20de%20P%C3%A1gina%20Web%20B%C3%A1sica%20de%20%246%2C000%20MXN" class="web-cta" target="_blank">Contratar Presencia Web →</a>
+      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20la%20Landing%20Page%20B%C3%A1sica%20(%243%2C900%20MXN)" class="web-cta" target="_blank">Contratar Landing Page →</a>
     </div>
 
     <!-- FULL -->
     <div class="web-card full">
       <div class="web-bg-label">PRO</div>
       <div class="web-card-label">Página Web · Nivel 02 · Más completo</div>
-      <div class="web-card-name">RESTAURANTE<br>DIGITAL PRO</div>
+      <div class="web-card-name">WEB PROFESIONAL<br>5 SECCIONES</div>
       <div class="web-card-tagline">Un ecosistema web completo que trabaja por tu restaurante 24/7. Menú dinámico, reservas automáticas, SEO local y analíticas avanzadas.</div>
       <div class="web-price-box">
         <div class="web-price-sub">// Pago único · anualidad incluida</div>
-        <div class="web-price">$16,000</div>
-        <div class="web-price-sub">MXN · todo incluido el primer año</div>
+        <div class="web-price">$5,900</div>
+        <div class="web-price-sub">MXN · pago único · sin contrato</div>
       </div>
       <ul class="web-features">
         <li class="web-feat"><span class="web-feat-ico">▸</span><div>Todo lo del nivel básico +</div></li>
@@ -638,7 +786,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2.5rem;display:flex;ali
         <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>SSL + Hosting Premium</strong> — sitio más rápido, mayor seguridad, backups automáticos · incluido 12 meses</div></li>
         <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Dashboard de visitas</strong> — Google Analytics configurado · ve cuánta gente entra a tu sitio y desde dónde</div></li>
       </ul>
-      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20servicio%20Restaurante%20Digital%20Pro%20de%20%2416%2C000%20MXN" class="web-cta" target="_blank">Contratar Restaurante Digital Pro →</a>
+      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20la%20Web%20Profesional%205%20Secciones%20(%245%2C900%20MXN)" class="web-cta" target="_blank">Contratar Web Profesional →</a>
     </div>
 
   </div>
