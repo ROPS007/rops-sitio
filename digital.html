@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ROPS Smart Advertising — Ecosistema Digital</title>
+<title>ROPS Smart Advertising — Marketing Digital para Restaurantes | Menú QR, Redes, Web</title>
+<meta name="description" content="Marketing digital para restaurantes: menú QR, flyers animados, gestión de redes sociales, páginas web y comerciales con IA. ROPS Smart Advertising. Guadalajara & Chicago.">
+<meta name="keywords" content="marketing digital restaurantes, menú QR restaurante, redes sociales restaurante, página web restaurante, ROPS Smart Advertising, Guadalajara">
+<meta property="og:title" content="ROPS Smart Advertising — Ecosistema Digital para Restaurantes">
+<meta property="og:description" content="Menú QR, redes sociales, flyers animados, páginas web y comerciales con IA. Hacemos tu restaurante deseable en el mundo digital.">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,300;1,600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -910,6 +915,30 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
 // ── Nav scroll tint ───────────────────────────────────────────────────────────
 window.addEventListener('scroll',()=>{document.querySelector('nav').style.background=scrollY>80?'rgba(3,4,10,.97)':'rgba(3,4,10,.85)'});
+
+// ── EXIT-INTENT POPUP ────────────────────────────────────────────────────────
+let exitShown=false;
+document.addEventListener('mouseout',function(e){
+  if(e.clientY<5&&!exitShown){
+    exitShown=true;
+    document.getElementById('exitPopup').style.display='flex';
+  }
+});
+function closeExit(){document.getElementById('exitPopup').style.display='none'}
 </script>
+
+<!-- EXIT POPUP -->
+<div id="exitPopup" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);align-items:center;justify-content:center">
+  <div style="background:var(--card);border:1px solid var(--border2);padding:3rem;max-width:480px;width:90%;position:relative;text-align:center">
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal),var(--teal2),transparent)"></div>
+    <button onclick="closeExit()" style="position:absolute;top:1rem;right:1.2rem;background:none;border:none;color:var(--muted2);font-size:1.4rem;cursor:pointer;font-family:monospace">&times;</button>
+    <div style="font-size:2.5rem;margin-bottom:1rem">🚀</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.04em;color:var(--text);line-height:1.1;margin-bottom:.8rem">¿Te vas sin llevar tu restaurante al mundo digital?</div>
+    <p style="font-size:.75rem;color:var(--muted2);line-height:1.7;margin-bottom:1.8rem;font-family:'Space Mono',monospace">Cotización GRATIS. Te decimos exactamente qué necesita tu restaurante para dominar el digital. Sin compromiso.</p>
+    <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20quiero%20cotizaci%C3%B3n%20de%20ROPS%20Smart%20Advertising." target="_blank" style="background:linear-gradient(135deg,var(--teal),var(--teal2));color:var(--bg);font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.85rem 2rem;text-decoration:none;display:inline-block;box-shadow:0 0 30px rgba(95,255,212,.3)">💬 Sí, quiero mi cotización GRATIS</a>
+    <div style="margin-top:1rem"><button onclick="closeExit()" style="background:none;border:none;color:var(--muted);font-size:.6rem;cursor:pointer;text-decoration:underline;font-family:'Space Mono',monospace">No gracias, mi restaurante no necesita presencia digital</button></div>
+  </div>
+</div>
+
 </body>
 </html>
