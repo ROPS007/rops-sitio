@@ -236,32 +236,38 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2.5rem;display:flex;ali
 .web-section{padding:5rem 2.5rem 6rem;max-width:1200px;margin:0 auto;position:relative;z-index:1}
 .web-isolated{display:inline-flex;align-items:center;gap:.6rem;background:rgba(245,200,66,.06);border:1px solid rgba(245,200,66,.25);padding:.3rem .9rem;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem}
 .web-isolated-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:blink 1.5s ease-in-out infinite}
-.web-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.2);margin-top:3rem}
+.web-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.2);margin-top:3rem}
+@media(max-width:900px){.web-grid{grid-template-columns:1fr}}
 .web-card{background:var(--card);padding:2.5rem;position:relative;overflow:hidden;transition:background .3s}
 .web-card:hover{background:#0A0C18}
+.web-card.recommended{background:#0A0C18;box-shadow:inset 0 0 40px rgba(95,255,212,.08)}
 .web-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
 .web-card.basic::before{background:linear-gradient(90deg,#1D9E75,transparent)}
-.web-card.full::before{background:linear-gradient(90deg,var(--gold),transparent)}
+.web-card.full::before{background:linear-gradient(90deg,var(--teal),transparent)}
+.web-card.premium::before{background:linear-gradient(90deg,var(--gold),transparent)}
+.web-recommended-badge{position:absolute;top:1rem;right:1rem;background:var(--teal);color:var(--bg);font-size:.5rem;letter-spacing:.18em;padding:.3rem .6rem;font-weight:700;text-transform:uppercase;font-family:'Space Mono',monospace;z-index:2;animation:pulse-badge 2s ease-in-out infinite}
+@keyframes pulse-badge{0%,100%{box-shadow:0 0 0 0 rgba(95,255,212,.6)}50%{box-shadow:0 0 20px 4px rgba(95,255,212,.2)}}
 .web-card-label{font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
-.web-card.basic .web-card-label{color:#1D9E75}.web-card.full .web-card-label{color:var(--gold)}
+.web-card.basic .web-card-label{color:#1D9E75}.web-card.full .web-card-label{color:var(--teal)}.web-card.premium .web-card-label{color:var(--gold)}
 .web-card-label::before{content:'';width:.8rem;height:1px;background:currentColor;box-shadow:0 0 6px currentColor}
 .web-card-name{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;letter-spacing:.06em;line-height:.9;margin-bottom:.5rem}
-.web-card.basic .web-card-name{color:var(--text)}.web-card.full .web-card-name{background:linear-gradient(135deg,var(--gold),#FFE97A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.web-card.basic .web-card-name{color:var(--text)}.web-card.full .web-card-name{background:linear-gradient(135deg,var(--teal),#99FFE8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.web-card.premium .web-card-name{background:linear-gradient(135deg,var(--gold),#FFE97A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .web-card-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--muted2);margin-bottom:1.8rem;line-height:1.6}
 .web-price-box{background:rgba(3,4,10,.6);border:1px solid;padding:1.2rem 1.5rem;margin-bottom:1.8rem}
-.web-card.basic .web-price-box{border-color:rgba(29,158,117,.2)}.web-card.full .web-price-box{border-color:rgba(245,200,66,.25)}
+.web-card.basic .web-price-box{border-color:rgba(29,158,117,.2)}.web-card.full .web-price-box{border-color:rgba(95,255,212,.25)}.web-card.premium .web-price-box{border-color:rgba(245,200,66,.25)}
 .web-price{font-family:'Bebas Neue',sans-serif;font-size:4rem;letter-spacing:.03em;line-height:1}
-.web-card.basic .web-price{color:#1D9E75;text-shadow:0 0 30px rgba(29,158,117,.35)}.web-card.full .web-price{color:var(--gold);text-shadow:0 0 30px rgba(245,200,66,.35)}
+.web-card.basic .web-price{color:#1D9E75;text-shadow:0 0 30px rgba(29,158,117,.35)}.web-card.full .web-price{color:var(--teal);text-shadow:0 0 30px rgba(95,255,212,.35)}.web-card.premium .web-price{color:var(--gold);text-shadow:0 0 30px rgba(245,200,66,.35)}
 .web-price-sub{font-size:.58rem;color:var(--muted2);margin-top:.3rem;letter-spacing:.1em}
 .web-features{list-style:none;display:flex;flex-direction:column;gap:.4rem;margin-bottom:2rem}
 .web-feat{display:flex;align-items:flex-start;gap:.75rem;padding:.55rem .7rem;border:1px solid transparent;transition:all .25s;font-size:.67rem;line-height:1.6;font-family:'Space Mono',monospace;color:var(--muted2)}
 .web-feat:hover{border-color:var(--border2);background:rgba(95,255,212,.02);color:var(--text)}
 .web-feat-ico{flex-shrink:0;margin-top:.08rem}
-.web-card.basic .web-feat-ico{color:#1D9E75}.web-card.full .web-feat-ico{color:var(--gold)}
+.web-card.basic .web-feat-ico{color:#1D9E75}.web-card.full .web-feat-ico{color:var(--teal)}.web-card.premium .web-feat-ico{color:var(--gold)}
 .web-feat strong{color:var(--text)}
 .web-cta{display:block;width:100%;padding:.8rem;text-align:center;font-family:'Space Mono',monospace;font-size:.62rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;transition:all .3s;border:1px solid}
 .web-card.basic .web-cta{border-color:#1D9E75;color:#1D9E75}.web-card.basic .web-cta:hover{background:#1D9E75;color:var(--bg);box-shadow:0 0 30px rgba(29,158,117,.35)}
-.web-card.full .web-cta{border-color:var(--gold);color:var(--gold)}.web-card.full .web-cta:hover{background:var(--gold);color:var(--bg);box-shadow:0 0 30px rgba(245,200,66,.35)}
+.web-card.full .web-cta{border-color:var(--teal);color:var(--teal)}.web-card.full .web-cta:hover{background:var(--teal);color:var(--bg);box-shadow:0 0 30px rgba(95,255,212,.35)}
+.web-card.premium .web-cta{border-color:var(--gold);color:var(--gold)}.web-card.premium .web-cta:hover{background:var(--gold);color:var(--bg);box-shadow:0 0 30px rgba(245,200,66,.35)}
 .web-note{margin-top:1.5rem;font-size:.62rem;color:var(--muted2);text-align:center;font-family:'Space Mono',monospace;padding:.8rem 1.2rem;border:1px solid var(--border);line-height:1.8}
 .web-note strong{color:var(--teal)}
 .web-bg-label{position:absolute;bottom:1.5rem;right:1.5rem;font-family:'Bebas Neue',sans-serif;font-size:5rem;letter-spacing:.15em;opacity:.03;pointer-events:none;line-height:1;color:var(--gold)}
@@ -722,17 +728,17 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2.5rem;display:flex;ali
       <div style="font-size:.7rem;color:var(--muted2);font-style:italic;margin-bottom:1.5rem">Domina tu mercado completamente</div>
       <div style="background:var(--bg);border:1px solid var(--border);padding:1rem 1.2rem;margin-bottom:1.5rem">
         <div style="font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted2);margin-bottom:.3rem">// Pago único · Sin contrato</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:var(--teal);line-height:1;text-shadow:0 0 30px rgba(95,255,212,.3)">$15,900</div>
-        <div style="font-size:.58rem;color:var(--muted2);margin-top:.2rem">MXN · valor real $23,095 MXN</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:var(--teal);line-height:1;text-shadow:0 0 30px rgba(95,255,212,.3)">$22,900</div>
+        <div style="font-size:.58rem;color:var(--muted2);margin-top:.2rem">MXN · valor real $28,099 MXN</div>
       </div>
       <ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.5rem">
         <li style="font-size:.72rem;color:var(--muted2);display:flex;gap:.5rem"><span style="color:var(--teal)">▸</span>Todo del Crecimiento</li>
-        <li style="font-size:.72rem;color:var(--muted2);display:flex;gap:.5rem"><span style="color:var(--teal)">▸</span>Web Profesional 5 Secciones ($5,900)</li>
+        <li style="font-size:.72rem;color:var(--muted2);display:flex;gap:.5rem"><span style="color:var(--teal)">▸</span>Web Essential incluida</li>
         <li style="font-size:.72rem;color:var(--muted2);display:flex;gap:.5rem"><span style="color:var(--teal)">▸</span>Logo + Animación ($1,199)</li>
         <li style="font-size:.72rem;color:var(--muted2);display:flex;gap:.5rem"><span style="color:var(--teal)">▸</span>2 Flyers Animados + Dashboard</li>
-        <li style="font-size:.72rem;font-weight:600;color:var(--teal);display:flex;gap:.5rem">★ Ahorro real: $7,195 MXN</li>
+        <li style="font-size:.72rem;font-weight:600;color:var(--teal);display:flex;gap:.5rem">★ Ahorro real: $5,199 MXN</li>
       </ul>
-      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20Combo%20ROPS%20Transformaci%C3%B3n%20Digital%20(%2415%2C900%20MXN)" class="pkg-cta-btn" target="_blank" style="display:inline-block;text-decoration:none">Contratar Transformación →</a>
+      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20Combo%20ROPS%20Transformaci%C3%B3n%20Digital%20(%2422%2C900%20MXN)" class="pkg-cta-btn" target="_blank" style="display:inline-block;text-decoration:none">Contratar Transformación →</a>
     </div>
 
   </div>
@@ -743,55 +749,88 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2.5rem;display:flex;ali
   <div class="web-isolated reveal"><span class="web-isolated-dot"></span>Servicio independiente · No incluido en ningún paquete</div>
   <div class="section-tag reveal"><span class="tag-line"></span><span class="tag-txt">Páginas Web para Restaurantes</span></div>
   <h2 class="section-h reveal">TU RESTAURANTE<br><em>en el internet.</em></h2>
-  <p class="reveal" style="font-size:.78rem;color:var(--muted2);max-width:600px;line-height:1.9;font-family:'Space Mono',monospace;margin-top:-.5rem">Dos niveles de presencia web, diseñados específicamente para restaurantes. Desde el sitio esencial hasta el ecosistema digital completo con menú dinámico, reservas, SEO local y analíticas avanzadas.</p>
+  <p class="reveal" style="font-size:.78rem;color:var(--muted2);max-width:600px;line-height:1.9;font-family:'Space Mono',monospace;margin-top:-.5rem">Tres niveles de presencia web diseñados específicamente para restaurantes. Desde el sitio profesional para arrancar hasta el ecosistema digital completo con pedidos en línea.</p>
 
   <div class="web-grid reveal">
 
-    <!-- BÁSICO -->
-    <div class="web-card basic">
+    <!-- ESSENTIAL · RECOMENDADO -->
+    <div class="web-card basic recommended">
+      <div class="web-recommended-badge">⭐ Recomendado</div>
       <div class="web-bg-label">WEB</div>
-      <div class="web-card-label">Página Web · Nivel 01</div>
-      <div class="web-card-name">LANDING PAGE<br>BÁSICA</div>
-      <div class="web-card-tagline">Tu restaurante existe en internet. Profesional, seguro y siempre en línea. El punto de partida digital que todo negocio necesita.</div>
+      <div class="web-card-label">Página Web · Nivel 01 · Para arrancar</div>
+      <div class="web-card-name">WEB<br>ESSENTIAL</div>
+      <div class="web-card-tagline">El punto de partida ideal. Sitio web profesional de 5 secciones, totalmente personalizado a tu restaurante. Lo necesario para verte como negocio serio en internet.</div>
       <div class="web-price-box">
-        <div class="web-price-sub">// Pago único · anualidad incluida</div>
-        <div class="web-price">$3,900</div>
+        <div class="web-price-sub">// Pago único</div>
+        <div class="web-price">$15,000</div>
         <div class="web-price-sub">MXN · pago único · sin contrato</div>
       </div>
       <ul class="web-features">
-        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Página web profesional</strong> — diseño responsivo, rápido y adaptado a la identidad del restaurante</div></li>
-        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Certificado SSL</strong> — sitio seguro con candado verde (https) · protección de datos del usuario</div></li>
-        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Hosting básico incluido</strong> — alojamiento web por 12 meses · sin pagos sorpresa</div></li>
-        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Dominio</strong> — turestaurante.com o .mx gestionado el primer año</div></li>
-        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Secciones esenciales</strong> — inicio, menú (PDF), contacto, ubicación y horarios</div></li>
-        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Integración Google Maps</strong> — mapa embed con dirección y botón "¿Cómo llegar?"</div></li>
-        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Botón WhatsApp flotante</strong> — contacto directo desde cualquier página del sitio</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Sitio web profesional 5 secciones</strong> — Inicio, menú, sobre nosotros, galería y contacto</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Diseño 100% responsivo</strong> — Se ve perfecto en móvil, tablet y desktop</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Identidad visual personalizada</strong> — Colores, tipografía y estilo adaptados al restaurante</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Menú digital integrado</strong> — Categorías organizadas con fotos de platillos</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Galería de fotos</strong> — Espacio para mostrar interior, ambiente y platillos</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Integración Google Maps</strong> — Mapa embed con dirección y botón "¿Cómo llegar?"</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Botón WhatsApp flotante</strong> — Contacto directo desde cualquier página</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Sistema de reservaciones vía WhatsApp</strong> — Formulario web que envía la reserva directo a tu WhatsApp con nombre, fecha, hora y personas</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Formulario de contacto</strong> — Para consultas, eventos y catering</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Optimización para velocidad</strong> — Carga rápida en cualquier dispositivo</div></li>
       </ul>
-      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20la%20Landing%20Page%20B%C3%A1sica%20(%243%2C900%20MXN)" class="web-cta" target="_blank">Contratar Landing Page →</a>
+      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20Paquete%20Web%20Essential%20(%2415%2C000%20MXN)" class="web-cta" target="_blank">Contratar Web Essential →</a>
     </div>
 
-    <!-- FULL -->
+    <!-- PRO -->
     <div class="web-card full">
       <div class="web-bg-label">PRO</div>
       <div class="web-card-label">Página Web · Nivel 02 · Más completo</div>
-      <div class="web-card-name">WEB PROFESIONAL<br>5 SECCIONES</div>
-      <div class="web-card-tagline">Un ecosistema web completo que trabaja por tu restaurante 24/7. Menú dinámico, reservas automáticas, SEO local y analíticas avanzadas.</div>
+      <div class="web-card-name">WEB<br>PRO</div>
+      <div class="web-card-tagline">Para restaurantes que quieren destacar. Diseño 100% a medida, SEO local optimizado, fotografía IA profesional y dashboard de analíticas. Tu restaurante en otra liga.</div>
       <div class="web-price-box">
-        <div class="web-price-sub">// Pago único · anualidad incluida</div>
-        <div class="web-price">$5,900</div>
+        <div class="web-price-sub">// Pago único</div>
+        <div class="web-price">$25,000</div>
         <div class="web-price-sub">MXN · pago único · sin contrato</div>
       </div>
       <ul class="web-features">
-        <li class="web-feat"><span class="web-feat-ico">▸</span><div>Todo lo del nivel básico +</div></li>
-        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Menú Digital Dinámico</strong> — no un PDF estático. Menú que se lee perfecto en móvil y puedes actualizar precios tú mismo desde un panel sencillo, sin saber código</div></li>
-        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Sistema de Reservas Integrado</strong> — botones directos a WhatsApp, OpenTable o formulario interno con confirmación automática</div></li>
-        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>SEO Local (Google Maps)</strong> — optimización técnica para aparecer cuando alguien busca "comida italiana cerca de mí" o "restaurante en [tu colonia]"</div></li>
-        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Fotografía de Alimentos IA</strong> — sesión de fotos mejoradas con IA integradas al sitio. Porque sin fotos profesionales, la web no vende</div></li>
-        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>QR Avanzado + Analytics</strong> — tracking de escaneos, análisis de comportamiento e integración directa con el menú dinámico</div></li>
-        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>SSL + Hosting Premium</strong> — sitio más rápido, mayor seguridad, backups automáticos · incluido 12 meses</div></li>
-        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Dashboard de visitas</strong> — Google Analytics configurado · ve cuánta gente entra a tu sitio y desde dónde</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div>Todo lo del Web Essential +</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Sistema de reservaciones completo</strong> — Calendario interactivo con horarios disponibles, confirmación automática por email y WhatsApp, panel para gestionar reservas</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Diseño 100% personalizado a la marca</strong> — Animaciones, microinteracciones y estilo único</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Menú digital dinámico</strong> — Categorías filtrables con búsqueda inteligente</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Galería profesional con lightbox</strong> — Fotos ampliables tipo Instagram</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Sección "Sobre nosotros"</strong> — Historia, valores y equipo destacados</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>SEO local optimizado</strong> — Aparece cuando buscan "comida [tipo] cerca de mí"</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Fotografía de alimentos con IA</strong> — Fotos mejoradas que hacen agua la boca</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Dashboard de visitas</strong> — Google Analytics configurado · ve cuánta gente entra</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Integración con redes sociales</strong> — Feed de Instagram y links a todas tus redes</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Sección de testimonios y reseñas</strong> — Reseñas destacadas de Google y clientes</div></li>
       </ul>
-      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20la%20Web%20Profesional%205%20Secciones%20(%245%2C900%20MXN)" class="web-cta" target="_blank">Contratar Web Profesional →</a>
+      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20Paquete%20Web%20Pro%20(%2425%2C000%20MXN)" class="web-cta" target="_blank">Contratar Web Pro →</a>
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="web-card premium">
+      <div class="web-bg-label">PREMIUM</div>
+      <div class="web-card-label">Página Web · Nivel 03 · Pedidos en línea</div>
+      <div class="web-card-name">WEB<br>PREMIUM</div>
+      <div class="web-card-tagline">El ecosistema digital completo. Sistema de pedidos en línea con carrito de compras y pasarela de pagos. Vende 24/7 sin depender de plataformas que te cobran comisión.</div>
+      <div class="web-price-box">
+        <div class="web-price-sub">// Pago único</div>
+        <div class="web-price">$40,000</div>
+        <div class="web-price-sub">MXN · pago único · sin contrato</div>
+      </div>
+      <ul class="web-features">
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div>Todo lo del Web Pro +</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Sistema de pedidos en línea</strong> — Carrito de compras completo con checkout optimizado</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Pasarela de pagos integrada</strong> — Acepta tarjetas, OXXO Pay y transferencias</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Panel administrativo</strong> — Gestiona pedidos, productos y stock desde tu celular</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Notificaciones automáticas</strong> — Cocina recibe pedidos por WhatsApp/impresora</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Múltiples sucursales</strong> — Si tienes o planeas abrir más locales</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Cupones y promociones</strong> — Crea descuentos por tiempo limitado</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Diseño 100% a medida</strong> — Animaciones avanzadas y experiencia única</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Tracking de pedidos en vivo</strong> — Cliente sabe estado de su pedido en tiempo real</div></li>
+        <li class="web-feat"><span class="web-feat-ico">▸</span><div><strong>Capacitación a tu equipo</strong> — Te enseñamos a usar todo el sistema</div></li>
+      </ul>
+      <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20me%20interesa%20el%20Paquete%20Web%20Premium%20(%2440%2C000%20MXN)" class="web-cta" target="_blank">Contratar Web Premium →</a>
     </div>
 
   </div>
@@ -816,12 +855,12 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2.5rem;display:flex;ali
   <p class="cta-sub">Una llamada de 20 minutos. Sin compromiso. Sin costo. Te decimos exactamente qué necesita tu restaurante hoy para dominar el mundo digital.</p>
   <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;position:relative">
     <a href="https://wa.me/17087657465?text=Hola%20Raymundo%2C%20quiero%20informaci%C3%B3n%20sobre%20ROPS%20Smart%20Advertising" class="btn-glow" target="_blank" style="font-size:.7rem;padding:.85rem 2.2rem">WhatsApp → Comenzar ahora</a>
-    <a href="mailto:ropsconsulting@gmail.com" class="btn-outline" style="font-size:.7rem;padding:.85rem 2.2rem">Enviar correo</a>
+    <a href="mailto:raydant20@outlook.com" class="btn-outline" style="font-size:.7rem;padding:.85rem 2.2rem">Enviar correo</a>
   </div>
   <div class="cta-contacts">
     <div class="contact-block"><div class="cl">Guadalajara MX</div><div class="cv"><a href="tel:+523336672749">+52 (33) 3667-2749</a></div></div>
     <div class="contact-block"><div class="cl">Chicago USA</div><div class="cv"><a href="tel:+17087657465">+1 (708) 765-7465</a></div></div>
-    <div class="contact-block"><div class="cl">Email</div><div class="cv"><a href="mailto:ropsconsulting@gmail.com">ropsconsulting@gmail.com</a></div></div>
+    <div class="contact-block"><div class="cl">Email</div><div class="cv"><a href="mailto:raydant20@outlook.com">raydant20@outlook.com</a></div></div>
     <div class="contact-block"><div class="cl">Certificación</div><div class="cv">Lean Six Sigma · ITESM</div></div>
   </div>
 </section>
